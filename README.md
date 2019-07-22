@@ -18,5 +18,4 @@ So, stand against the birds,stand beside the pigs. They are being tortured a lot
 
 ### Frameworks and Engines:
 * LibGDX
-* Box2D Physics Engine
 
