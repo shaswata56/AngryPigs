@@ -1,10 +1,9 @@
 package org.angrypigs.game;
 
 import android.os.Bundle;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import org.angrypigs.game.AngryPigs;
+import com.badlogic.gdx.backends.android.surfaceview.RatioResolutionStrategy;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

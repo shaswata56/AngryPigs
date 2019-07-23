@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -36,6 +38,9 @@ public class JoinGame implements Screen {
     private float elapsedTime;
     private Animation<TextureRegion> connectAnimation;
     private HashMap <String, Avatar> friendlyPlayers;
+    private static final float ASPECT_RATIO = (float) Constants.WIDTH / (float) Constants.HEIGHT;
+    private OrthographicCamera cam;
+    private Rectangle viewport;
     private MenuScreen menu;
 
     public JoinGame(AngryPigs g, MenuScreen menu) {
@@ -46,11 +51,14 @@ public class JoinGame implements Screen {
         sprite.setPosition(Constants.WIDTH / 2 - 110, Constants.HEIGHT / 2 - 150);
         playerTex = new Texture("ship/playerShip2.png");
         enemyTex = new Texture("ship/playerShip.png");
+        cam = new OrthographicCamera(Constants.WIDTH, Constants.HEIGHT);
+        resize(Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
+        batch = g.batch;
+        batch.setProjectionMatrix(cam.combined);
         this.menu = menu;
         friendlyPlayers = new HashMap<String, Avatar>();
         bullet = new Bullet(0, 0, 0, 0);
         sprite.setScale(0.7f);
-        batch = g.batch;
         game = g;
         connectSocket();
     }
@@ -171,6 +179,10 @@ public class JoinGame implements Screen {
     @Override
     public void render(float delta) {
 
+        cam.update();
+        batch.getProjectionMatrix().set(cam.combined);
+        Gdx.gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width, (int) viewport.height);
+
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
@@ -220,7 +232,24 @@ public class JoinGame implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        float aspectRatio = (float) width / (float) height;
+        float scale = 1f;
+        Vector2 crop = new Vector2(0,0);
 
+        if(aspectRatio > ASPECT_RATIO) {
+            scale = (float) height / (float) Constants.HEIGHT;
+            crop.x = (width - Constants.WIDTH * scale) / 2f;
+        } else if(aspectRatio < ASPECT_RATIO) {
+            scale = (float) width / (float) Constants.WIDTH;
+            crop.y = (height - Constants.HEIGHT * scale) / 2f;
+        } else {
+            scale = (float) width / (float) Constants.WIDTH;
+        }
+
+        float w = (float) Constants.WIDTH * scale;
+        float h = (float) Constants.HEIGHT * scale;
+        viewport = new Rectangle(crop.x, crop.y, w, h);
+        cam.position.set(viewport.getWidth() /2 - 30, viewport.getHeight() /2 - 20, 0);
     }
 
     @Override
