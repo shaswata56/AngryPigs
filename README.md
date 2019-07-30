@@ -8,6 +8,8 @@ But, do you think that the pigs did something this much worse, that they should 
 
 So, stand against the birds,stand beside the pigs. They are being tortured a lot. Save them! Or, they'll get killed only for collecting some foods. And see the twists!
 
+Backend repository for this game is [here](https://github.com/shaswata56/AngryPigs-Backend).
+
 ***
 ##### Btw, this is a project for SWE-224 Course (Object Oriented Programming Language Lab) at SUST 
 ***
@@ -15,7 +17,10 @@ So, stand against the birds,stand beside the pigs. They are being tortured a lot
 ## We're making the game with:
 ### Language:
 * Java
+* JavaScript
 
 ### Frameworks and Engines:
 * LibGDX
+* Node JS
+* Express JS
 
